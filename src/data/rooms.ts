@@ -49,20 +49,19 @@ const fallbackRooms = [
   }
 ];
 
-let rooms: any[] = fallbackRooms;
-
-try {
-  const response = await fetch("https://your-backend-url.com/api/v1/rooms", {
-    headers: {
-      'ngrok-skip-browser-warning': 'true',
-    },
-  });
-  if (response.ok) {
-    const data = await response.json();
-    if (Array.isArray(data)) rooms = data;
+const fetchRooms = async (): Promise<any[]> => {
+  try {
+    const response = await fetch("https://your-backend-url.com/api/v1/rooms", {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      if (Array.isArray(data)) return data;
+    }
+  } catch (error) {
+    console.warn("⚠️ Room API failed, using fallback data");
   }
-} catch (error) {
-  console.warn("⚠️ Room API failed, using fallback data");
-}
+  return fallbackRooms;
+};
 
-export default rooms;
+export default fetchRooms;
