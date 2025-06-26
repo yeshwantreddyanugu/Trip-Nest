@@ -6,9 +6,9 @@ const AboutUs = () => {
   const teamMembers = [
     {
       id: 1,
-      name: 'Alex Johnson',
+      name: 'Anugu Yeshwant Reddy',
       role: 'Founder & CEO',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80',
+      image: 'https://lunchboxbuck.s3.amazonaws.com/c55fbb31-4300-4e59-9042-fe03df00ea28',
       bio: 'Travel enthusiast with 15+ years in the hospitality industry'
     },
     {
@@ -20,9 +20,9 @@ const AboutUs = () => {
     },
     {
       id: 3,
-      name: 'Rahul Mehta',
+      name: 'Anugu Yeshwant Reddy',
       role: 'Technology Director',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+      image: 'https://lunchboxbuck.s3.amazonaws.com/bfc02d53-0a7e-4bfd-afa5-b375fbf8391a',
       bio: 'Builds the platforms that power your perfect vacation'
     },
     {
@@ -55,7 +55,7 @@ const AboutUs = () => {
         </div>
 
         {/* About Content */}
-       <div className="flex flex-col lg:flex-row gap-8 items-center mb-12 md:mb-16">
+        <div className="flex flex-col lg:flex-row gap-8 items-center mb-12 md:mb-16">
           <div className="lg:w-1/2">
             <div className="relative rounded-xl overflow-hidden shadow-xl h-96 w-full">
               <img
@@ -72,11 +72,11 @@ const AboutUs = () => {
           <div className="lg:w-1/2">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Who We Are</h3>
             <p className="text-gray-600 mb-4">
-              Wanderlust was born from a simple idea: travel should be effortless, memorable, and accessible to everyone. 
+              Wanderlust was born from a simple idea: travel should be effortless, memorable, and accessible to everyone.
               What started as a small booking platform has grown into one of India's most trusted travel companies.
             </p>
             <p className="text-gray-600 mb-6">
-              Our team of travel experts, technologists, and hospitality professionals work tirelessly to 
+              Our team of travel experts, technologists, and hospitality professionals work tirelessly to
               curate the best experiences across India's diverse landscapes - from Himalayan peaks to tropical beaches.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -94,8 +94,8 @@ const AboutUs = () => {
         {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
           {stats.map((stat, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 text-center"
             >
               <div className="flex justify-center mb-4">
@@ -109,32 +109,36 @@ const AboutUs = () => {
 
         {/* Team Section */}
         <div className="mb-8 mt-0">
-          <h3 className="text-2xl font-bold text-gray-900 mb-12 text-center">Meet The Team</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member) => (
-              <div key={member.id} className="group">
-                <div className="relative rounded-xl overflow-hidden mb-4 h-64">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                </div>
-                <h4 className="text-xl font-bold text-gray-900">{member.name}</h4>
-                <p className="text-blue-600 font-medium mb-2">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.bio}</p>
-              </div>
-            ))}
-          </div>
+  <h3 className="text-2xl font-bold text-gray-900 mb-12 text-center">Meet The Team</h3>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    {teamMembers.map((member) => (
+      <div
+        key={member.id}
+        className="group border-2 border-gray-300 rounded-xl p-4 hover:border-blue-600 transition-colors duration-300"
+      >
+        <div className="relative rounded-xl overflow-hidden mb-4 h-64">
+          <img
+            src={member.image}
+            alt={member.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         </div>
+        <h4 className="text-xl font-bold text-gray-900">{member.name}</h4>
+        <p className="text-blue-600 font-medium mb-2">{member.role}</p>
+        <p className="text-gray-600 text-sm">{member.bio}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
 
         {/* Mission Section */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 md:p-10 mt-0 mb-0">
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Our Mission</h3>
             <p className="text-gray-600 text-lg mb-8">
-              To empower travelers with seamless booking experiences while supporting local communities 
+              To empower travelers with seamless booking experiences while supporting local communities
               and promoting sustainable tourism practices across India.
             </p>
             {/* <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">

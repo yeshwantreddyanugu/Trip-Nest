@@ -199,9 +199,9 @@ const HotelsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <div className="container mx-auto px-4 pt-24 pb-8">
+        <div className="mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">
             Hotels {city && `in ${city}`}
           </h1>
           <div className="flex flex-wrap gap-4 text-gray-600">

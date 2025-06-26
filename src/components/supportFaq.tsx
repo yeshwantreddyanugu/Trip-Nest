@@ -1,46 +1,65 @@
 import React, { useState } from 'react';
-import { Headphones, Mail, MessageSquare, ChevronDown, ChevronUp, HelpCircle, Phone, Shield } from 'lucide-react';
+import {
+  Headphones,
+  Mail,
+  MessageSquare,
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
+  Phone,
+  Shield
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const SupportFAQ = () => {
   const [activeTab, setActiveTab] = useState('faq');
   const [openQuestion, setOpenQuestion] = useState<number | null>(null);
 
+  const adminPhoneNumber = '+919963516206'; // Replace with your admin number
+  const adminEmail = 'yeshwantreddyanugu@gmail.com';
+  const whatsappMessage = 'Hi! I need help with my booking.';
+
   const faqs = [
     {
       id: 1,
       question: 'How do I make changes to my booking?',
-      answer: 'You can modify your booking through your account dashboard or by contacting our customer support team. Most changes can be made up to 48 hours before your scheduled arrival.',
+      answer:
+        'You can modify your booking through your account dashboard or by contacting our customer support team. Most changes can be made up to 48 hours before your scheduled arrival.',
       category: 'bookings'
     },
     {
       id: 2,
       question: 'What is your cancellation policy?',
-      answer: 'Cancellation policies vary by property and rate plan. Generally, free cancellation is available up to 24-72 hours before check-in. Please check your booking confirmation for specific details.',
+      answer:
+        'Cancellation policies vary by property and rate plan. Generally, free cancellation is available up to 24-72 hours before check-in. Please check your booking confirmation for specific details.',
       category: 'bookings'
     },
     {
       id: 3,
       question: 'How do I contact customer support?',
-      answer: 'Our support team is available 24/7 via phone (+1-800-555-1234), live chat, or email (support@wanderlust.com). Average response time is under 15 minutes for urgent inquiries.',
+      answer:
+        'Our support team is available 24/7 via phone, live chat, or email. Average response time is under 15 minutes for urgent inquiries.',
       category: 'support'
     },
     {
       id: 4,
       question: 'What payment methods do you accept?',
-      answer: 'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, Google Pay, and select local payment methods in various countries.',
+      answer:
+        'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, Google Pay, and select local payment methods in various countries.',
       category: 'payments'
     },
     {
       id: 5,
       question: 'Is my payment information secure?',
-      answer: 'Yes, we use industry-standard 256-bit SSL encryption and comply with PCI DSS standards. Your payment details are never stored on our servers.',
+      answer:
+        'Yes, we use industry-standard 256-bit SSL encryption and comply with PCI DSS standards. Your payment details are never stored on our servers.',
       category: 'payments'
     },
     {
       id: 6,
       question: 'How do I earn loyalty points?',
-      answer: 'Earn 5 points for every $1 spent on bookings. Additional points can be earned through promotions, referrals, and special offers. Points can be redeemed for discounts and free stays.',
+      answer:
+        'Earn 5 points for every $1 spent on bookings. Additional points can be earned through promotions, referrals, and special offers.',
       category: 'rewards'
     }
   ];
@@ -48,10 +67,18 @@ const SupportFAQ = () => {
   const contactMethods = [
     {
       id: 1,
-      title: 'Live Chat',
+      title: 'WhatsApp Chat',
       description: 'Instant help from our support team',
       icon: <MessageSquare className="h-6 w-6 text-blue-600" />,
-      action: 'Start Chat',
+      actionLabel: 'Start Chat',
+      action: () => {
+        window.open(
+          `https://wa.me/${adminPhoneNumber.replace('+', '')}?text=${encodeURIComponent(
+            whatsappMessage
+          )}`,
+          '_blank'
+        );
+      },
       responseTime: 'Typically replies in 2 minutes'
     },
     {
@@ -59,7 +86,10 @@ const SupportFAQ = () => {
       title: 'Email Support',
       description: 'Detailed assistance via email',
       icon: <Mail className="h-6 w-6 text-purple-600" />,
-      action: 'Send Email',
+      actionLabel: 'Send Email',
+      action: () => {
+        window.location.href = `mailto:${adminEmail}?subject=Support Request&body=Hi Wanderlust Team,%0A%0AI need assistance regarding...`;
+      },
       responseTime: 'Typically replies in 1 hour'
     },
     {
@@ -67,7 +97,10 @@ const SupportFAQ = () => {
       title: 'Phone Support',
       description: '24/7 assistance in multiple languages',
       icon: <Phone className="h-6 w-6 text-green-600" />,
-      action: 'Call Now',
+      actionLabel: 'Call Now',
+      action: () => {
+        window.location.href = `tel:${adminPhoneNumber}`;
+      },
       responseTime: 'Immediate response'
     }
   ];
@@ -93,14 +126,22 @@ const SupportFAQ = () => {
         <div className="flex border-b border-gray-200 mb-12">
           <button
             onClick={() => setActiveTab('faq')}
-            className={`px-6 py-4 font-medium text-lg flex items-center gap-2 ${activeTab === 'faq' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-6 py-4 font-medium text-lg flex items-center gap-2 ${
+              activeTab === 'faq'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
           >
             <HelpCircle className="h-5 w-5" />
             FAQs
           </button>
           <button
             onClick={() => setActiveTab('support')}
-            className={`px-6 py-4 font-medium text-lg flex items-center gap-2 ${activeTab === 'support' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-6 py-4 font-medium text-lg flex items-center gap-2 ${
+              activeTab === 'support'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
           >
             <Headphones className="h-5 w-5" />
             Contact Support
@@ -170,22 +211,37 @@ const SupportFAQ = () => {
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               {contactMethods.map((method) => (
-                <div key={method.id} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                <div
+                  key={method.id}
+                  className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+                >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="p-3 rounded-lg bg-blue-50">
-                      {method.icon}
-                    </div>
+                    <div className="p-3 rounded-lg bg-blue-50">{method.icon}</div>
                     <h3 className="text-xl font-bold text-gray-900">{method.title}</h3>
                   </div>
                   <p className="text-gray-600 mb-4">{method.description}</p>
                   <p className="text-sm text-gray-500 mb-6 flex items-center gap-2">
-                    <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      className="h-4 w-4 text-green-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
                     {method.responseTime}
                   </p>
-                  <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-50">
-                    {method.action}
+                  <Button
+                    variant="outline"
+                    className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
+                    onClick={method.action}
+                  >
+                    {method.actionLabel}
                   </Button>
                 </div>
               ))}
@@ -200,11 +256,23 @@ const SupportFAQ = () => {
                   Our customer support team is available 24/7 to help with any urgent matters.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  <Button
+                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    onClick={() => window.location.href = `tel:${adminPhoneNumber}`}
+                  >
                     <Phone className="h-5 w-5 mr-2" />
-                    Call +1-800-555-1234
+                    Call {adminPhoneNumber}
                   </Button>
-                  <Button variant="outline" className="px-8 py-4 border-blue-600 text-blue-600 hover:bg-blue-50">
+                  <Button
+                    variant="outline"
+                    className="px-8 py-4 border-blue-600 text-blue-600 hover:bg-blue-50"
+                    onClick={() =>
+                      window.open(
+                        `https://wa.me/${adminPhoneNumber.replace('+', '')}?text=${encodeURIComponent(whatsappMessage)}`,
+                        '_blank'
+                      )
+                    }
+                  >
                     <MessageSquare className="h-5 w-5 mr-2" />
                     Start Live Chat
                   </Button>

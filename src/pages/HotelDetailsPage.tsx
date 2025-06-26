@@ -449,7 +449,7 @@ const HotelDetailsPage = () => {
         </div>
 
         {/* Rooms Section */}
-        <div className="container mx-auto px-4 mb-8">
+        <div className="container mx-auto px-4 mb-8 mt-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Available Rooms</h2>
 
           {error && (

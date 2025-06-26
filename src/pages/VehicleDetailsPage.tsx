@@ -12,7 +12,8 @@ import {
   Zap,
   Settings,
   Calendar,
-  ArrowLeft
+  ArrowLeft,
+  Gauge, Activity, Snowflake
 } from 'lucide-react';
 
 import Header from '@/components/Header';
@@ -165,11 +166,11 @@ const VehicleDetailsPage = () => {
                 ))}
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{vehicle.name}</h1>
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4 mb-2">
                 <div className="flex items-center gap-1">
                   <Star className="h-5 w-5 text-yellow-500" />
                   <span className="font-semibold">{vehicle.rating.toFixed(1)}</span>
-                  <span className="text-gray-500">({vehicle.reviewCount} reviews)</span>
+                  {/* <span className="text-gray-500">({vehicle.reviewCount} reviews)</span> */}
                 </div>
                 <div className="flex items-center gap-2 text-gray-600">
                   <MapPin className="h-4 w-4" />
@@ -177,12 +178,12 @@ const VehicleDetailsPage = () => {
                 </div>
               </div>
               <div className="text-gray-600">
-                <span className="font-medium">Vendor:</span> {vehicle.vendor}
+                <span className="font-medium">Vendor:</span> mytripsaga.com
               </div>
             </div>
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3">
                 <h3 className="text-xl font-semibold mb-3">Description</h3>
                 <p className="text-gray-600">{vehicle.description}</p>
               </CardContent>
@@ -192,6 +193,7 @@ const VehicleDetailsPage = () => {
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-4">Specifications</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-blue-600" />
                     <div>
@@ -199,6 +201,7 @@ const VehicleDetailsPage = () => {
                       <div className="text-sm text-gray-600">{vehicle.seating} persons</div>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <Zap className="h-5 w-5 text-blue-600" />
                     <div>
@@ -206,6 +209,7 @@ const VehicleDetailsPage = () => {
                       <div className="text-sm text-gray-600">{vehicle.fuel}</div>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <Settings className="h-5 w-5 text-blue-600" />
                     <div>
@@ -213,23 +217,36 @@ const VehicleDetailsPage = () => {
                       <div className="text-sm text-gray-600">{vehicle.transmission}</div>
                     </div>
                   </div>
-                  <div>
-                    <div className="font-medium">Engine</div>
-                    <div className="text-sm text-gray-600">{vehicle.engine}</div>
+
+                  <div className="flex items-center gap-2">
+                    <Gauge className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <div className="font-medium">Engine</div>
+                      <div className="text-sm text-gray-600">{vehicle.engine}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-medium">Mileage</div>
-                    <div className="text-sm text-gray-600">{vehicle.mileage}</div>
+
+                  <div className="flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <div className="font-medium">Mileage</div>
+                      <div className="text-sm text-gray-600">{vehicle.mileage}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-medium">AC</div>
-                    <div className="text-sm text-gray-600">
-                      {vehicle.ac ? 'Available' : 'Not Available'}
+
+                  <div className="flex items-center gap-2">
+                    <Snowflake className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <div className="font-medium">AC</div>
+                      <div className="text-sm text-gray-600">
+                        {vehicle.ac ? 'Available' : 'Not Available'}
+                      </div>
                     </div>
                   </div>
 
                 </div>
               </CardContent>
+
             </Card>
           </div>
 
