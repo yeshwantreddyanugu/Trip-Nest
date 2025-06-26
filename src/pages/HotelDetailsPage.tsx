@@ -586,12 +586,12 @@ const HotelDetailsPage = () => {
                               {/* Price & Booking */}
                               <div className="mt-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
-                                  <p className="text-sm text-gray-500">Total for {nights} {nights === 1 ? 'night' : 'nights'}</p>
-                                  <p className="text-2xl font-bold text-gray-900">
+                                  <p className="text-2xl font-bold text-gray-900 flex items-baseline gap-2">
                                     ₹{(room.pricePerNight * nights).toLocaleString()}
+                                    <span className="text-sm text-gray-500 font-normal">per night</span>
                                   </p>
-                                  <p className="text-sm text-gray-500">₹{room.pricePerNight.toLocaleString()} per night</p>
                                 </div>
+
                                 <Link
                                   to={{
                                     pathname: `/book-room/${room.id}`,

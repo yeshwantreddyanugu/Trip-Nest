@@ -42,7 +42,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-10 md:py-10 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -55,7 +55,7 @@ const AboutUs = () => {
         </div>
 
         {/* About Content */}
-        <div className="flex flex-col lg:flex-row gap-12 items-center mb-20">
+       <div className="flex flex-col lg:flex-row gap-8 items-center mb-12 md:mb-16">
           <div className="lg:w-1/2">
             <div className="relative rounded-xl overflow-hidden shadow-xl h-96 w-full">
               <img
@@ -80,13 +80,13 @@ const AboutUs = () => {
               curate the best experiences across India's diverse landscapes - from Himalayan peaks to tropical beaches.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button variant="outline" className="flex items-center gap-2">
+              {/* <Button variant="outline" className="flex items-center gap-2">
                 <Star className="h-4 w-4" />
                 Our Values
               </Button>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
                 Join Our Team
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ const AboutUs = () => {
         </div>
 
         {/* Team Section */}
-        <div className="mb-16">
+        <div className="mb-8 mt-0">
           <h3 className="text-2xl font-bold text-gray-900 mb-12 text-center">Meet The Team</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member) => (
@@ -130,16 +130,16 @@ const AboutUs = () => {
         </div>
 
         {/* Mission Section */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 md:p-12">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 md:p-10 mt-0 mb-0">
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Our Mission</h3>
             <p className="text-gray-600 text-lg mb-8">
               To empower travelers with seamless booking experiences while supporting local communities 
               and promoting sustainable tourism practices across India.
             </p>
-            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+            {/* <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
               Learn About Our Sustainability Initiatives
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

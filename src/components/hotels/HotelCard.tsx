@@ -14,8 +14,8 @@ interface Hotel {
   tags: string[];
   amenities: string[];
   starCategory: number;
-  minPrice:number;
-  maxPrice:number;
+  minPrice: number;
+  maxPrice: number;
 
 }
 
@@ -27,8 +27,8 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group">
       <div className="relative">
-        <img 
-          src={hotel.image} 
+        <img
+          src={hotel.image}
           alt={hotel.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -78,12 +78,25 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
 
         <div className="flex justify-between items-center">
           <div>
-            <span className="text-2xl font-bold text-gray-900">₹{(hotel.minPrice ?? hotel.pricePerNight ?? 0).toLocaleString()}</span>
-            <span className="text-gray-500 text-sm">/night</span>
+            <p className="text-xs text-gray-500 mb-1">Price per night</p>
+            <div className="flex items-baseline">
+              <span className="text-xl font-bold text-green-600">
+                ₹{hotel?.minPrice || "4,500"}
+              </span>
+              {hotel?.maxPrice && (
+                <>
+                  <span className="text-gray-400 mx-1">-</span>
+                  <span className="text-xl font-bold text-green-600">
+                    ₹{hotel.maxPrice}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
-          <div className="text-right">
+
+          {/* <div className="text-right">
             <div className="text-sm text-gray-500">{hotel.reviewCount} reviews</div>
-          </div>
+          </div> */}
         </div>
 
         <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
