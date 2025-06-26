@@ -143,7 +143,7 @@ const BookingConfirmationPage = () => {
                     <div>
                       <h2 className="text-xl font-bold text-gray-900">{hotel?.name}</h2>
                       <div className="flex items-center gap-1">
-                        {[...Array(hotel?.rating || 0)].map((_, i) => (
+                        {[...Array(Math.floor(Number(hotel?.rating || 0)))].map((_, i) => (
                           <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>

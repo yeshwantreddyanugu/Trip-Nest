@@ -78,15 +78,14 @@ const VehicleCard = ({ vehicle, onViewDetails }: VehicleCardProps) => {
         <div className="flex items-center gap-2 text-gray-600 mb-3">
           <MapPin className="h-4 w-4" />
           <span>{vehicle.location}</span>
-          <span className="text-gray-400">•</span>
           <span>{vehicle.vendor}</span>
         </div>
 
         <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
-          <div className="flex items-center gap-1">
+          {/* <div className="flex items-center gap-1">
             <Users className="h-4 w-4" />
             <span>{vehicle.seating}</span>
-          </div>
+          </div> */}
           <div className="flex items-center gap-1">
             <Zap className="h-4 w-4" />
             <span>{vehicle.fuel}</span>
@@ -101,9 +100,12 @@ const VehicleCard = ({ vehicle, onViewDetails }: VehicleCardProps) => {
           <Badge variant="secondary" className="text-xs">
             {vehicle.type}
           </Badge>
-          <Badge variant="secondary" className="text-xs">
-            {vehicle.category}
+          {/* <Badge variant="secondary" className="text-xs">
+            {vehicle.transmission}
           </Badge>
+          <Badge variant="secondary" className="text-xs">
+            {vehicle.fuel}
+          </Badge> */}
           {vehicle.ac && (
             <Badge variant="secondary" className="text-xs">
               AC
@@ -118,7 +120,7 @@ const VehicleCard = ({ vehicle, onViewDetails }: VehicleCardProps) => {
               <span className="text-gray-500 text-sm">/hour</span>
             </div>
             <div className="text-sm text-gray-500">
-              ₹{vehicle.pricePerDay}/day • ₹{vehicle.pricePerWeek}/week
+              ₹{vehicle.pricePerDay}/day <br /> ₹{vehicle.pricePerWeek}/week
             </div>
           </div>
           <Button

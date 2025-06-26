@@ -3,6 +3,8 @@ import { MapPin, Calendar, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { toast } from '@/components/ui/use-toast';
+
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -94,12 +96,22 @@ const Hero = () => {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => !isGuest && setActiveTab(tab.id)}
-                className={`flex items-center px-6 py-3 mx-2 mb-2 rounded-full font-semibold transition-all duration-300 ${
-                  activeTab === tab.id
+                onClick={() => {
+                  if (isGuest && tab.id !== 'hotels') {
+                    toast({
+                      title: "Please Sign Up First",
+                      description: "You must sign-up to use this website.",
+                      // variant: "destructive",
+                    });
+                    return;
+                  }
+                  setActiveTab(tab.id);
+                }}
+
+                className={`flex items-center px-6 py-3 mx-2 mb-2 rounded-full font-semibold transition-all duration-300 ${activeTab === tab.id
                     ? 'bg-white text-blue-600 shadow-lg scale-105'
                     : 'bg-white/20 text-white hover:bg-white/30'
-                }`}
+                  }`}
               >
                 <span className="mr-2 text-xl">{tab.icon}</span>
                 {tab.label}
