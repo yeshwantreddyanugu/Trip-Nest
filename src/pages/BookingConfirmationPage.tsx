@@ -236,14 +236,14 @@ const BookingConfirmationPage = () => {
               </Card>
 
               <div className="flex flex-col gap-4 w-full lg:w-1/2">
-                <Button variant="outline" onClick={handleDownloadReceipt} className="w-full flex items-center gap-2 h-12">
+                {/* <Button variant="outline" onClick={handleDownloadReceipt} className="w-full flex items-center gap-2 h-12">
                   <Download className="h-4 w-4" />
                   Download Receipt
-                </Button>
-                <Button variant="outline" className="w-full flex items-center gap-2 h-12">
+                </Button> */}
+                {/* <Button variant="outline" className="w-full flex items-center gap-2 h-12">
                   <Mail className="h-4 w-4" />
                   Email Confirmation
-                </Button>
+                </Button> */}
                 <Link to="/">
                   <Button className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                     Book Another Hotel

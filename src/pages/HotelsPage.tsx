@@ -34,7 +34,7 @@ const HotelsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>({
     location: city,
-    priceRange: [0, 20000],
+    priceRange: [0, 200000],
     starCategory: '',
     amenities: [],
     onlyAvailable: false,

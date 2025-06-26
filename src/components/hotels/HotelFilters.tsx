@@ -50,7 +50,7 @@ const HotelFilters: React.FC<HotelFiltersProps> = ({ filters, onFiltersChange })
   const clearFilters = () => {
     onFiltersChange({
       location: '',
-      priceRange: [0, 20000],
+      priceRange: [0, 200000],
       starCategory: '',
       amenities: [],
       onlyAvailable: false,

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 
-
 const Hero = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('hotels');
@@ -13,19 +12,23 @@ const Hero = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
 
-  const uid = localStorage.getItem('firebaseUID');
-  const isGuest = !uid;
-
   const tabs = [
     { id: 'hotels', label: 'Hotels', icon: '🏨' },
     { id: 'resorts', label: 'Resorts', icon: '🏝️' },
     { id: 'vehicles', label: 'Vehicles', icon: '🚗' }
   ];
 
-  const popularCities = ['Goa', 'Manali', 'Udaipur', 'Hyderabad', 'Pondicherry', 'Mumbai', 'Delhi', 'Bangalore', 'uppal'];
+  const popularCities = ['Goa', 'Manali', 'Udaipur', 'Hyderabad', 'Pondicherry', 'Mumbai', 'Delhi', 'Bangalore', 'Uppal'];
 
   const handleSearch = () => {
+    const uid = localStorage.getItem('firebaseUID');
+    const isGuest = !uid;
+
     if (isGuest) {
+      toast({
+        title: 'Please Sign Up First',
+        description: 'You must sign-up to use this website.',
+      });
       navigate('/auth');
       return;
     }
@@ -96,22 +99,12 @@ const Hero = () => {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => {
-                  if (isGuest && tab.id !== 'hotels') {
-                    toast({
-                      title: "Please Sign Up First",
-                      description: "You must sign-up to use this website.",
-                      // variant: "destructive",
-                    });
-                    return;
-                  }
-                  setActiveTab(tab.id);
-                }}
-
-                className={`flex items-center px-6 py-3 mx-2 mb-2 rounded-full font-semibold transition-all duration-300 ${activeTab === tab.id
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center px-6 py-3 mx-2 mb-2 rounded-full font-semibold transition-all duration-300 ${
+                  activeTab === tab.id
                     ? 'bg-white text-blue-600 shadow-lg scale-105'
                     : 'bg-white/20 text-white hover:bg-white/30'
-                  }`}
+                }`}
               >
                 <span className="mr-2 text-xl">{tab.icon}</span>
                 {tab.label}
@@ -129,11 +122,13 @@ const Hero = () => {
               </label>
               <select
                 value={selectedLocation}
-                onChange={(e) => !isGuest && setSelectedLocation(e.target.value)}
+                onChange={(e) => setSelectedLocation(e.target.value)}
                 className="w-full p-3 rounded-lg bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-blue-500 font-medium"
               >
-                {popularCities.map(city => (
-                  <option key={city} value={city}>{city}</option>
+                {popularCities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
                 ))}
               </select>
             </div>
@@ -147,7 +142,7 @@ const Hero = () => {
               <input
                 type="date"
                 value={checkIn}
-                onChange={(e) => !isGuest && setCheckIn(e.target.value)}
+                onChange={(e) => setCheckIn(e.target.value)}
                 className="w-full p-3 rounded-lg bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -161,12 +156,12 @@ const Hero = () => {
               <input
                 type="date"
                 value={checkOut}
-                onChange={(e) => !isGuest && setCheckOut(e.target.value)}
+                onChange={(e) => setCheckOut(e.target.value)}
                 className="w-full p-3 rounded-lg bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            {/* ✅ Search Button - Only redirects if guest */}
+            {/* Search Button */}
             <Button
               size="lg"
               onClick={handleSearch}

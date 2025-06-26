@@ -24,7 +24,7 @@ const VehiclesPage = () => {
     transmission: [] as string[],
     fuel: [] as string[],
     ac: null as boolean | null,
-    priceRange: [0, 10000] as [number, number],
+    priceRange: [0, 100000] as [number, number],
     rating: 0
   });
 
@@ -226,7 +226,7 @@ const VehiclesPage = () => {
                     transmission: [],
                     fuel: [],
                     ac: null,
-                    priceRange: [100, 10000],
+                    priceRange: [0, 100000],
                     rating: 0
                   })}
                   className="mt-4 text-blue-600 hover:text-blue-800"

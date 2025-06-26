@@ -193,13 +193,13 @@ const VehicleBookingConfirmationPage = () => {
               >
                 Browse More Vehicles <ArrowRight className="w-5 h-5" />
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 onClick={handleDownloadReceipt}
                 className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg rounded-xl flex items-center gap-2"
               >
                 Download Receipt
-              </Button>
+              </Button> */}
             </motion.div>
 
             {/* Help Section */}
