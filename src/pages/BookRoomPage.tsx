@@ -136,7 +136,7 @@ const BookRoomPage = () => {
       console.log('Payload being sent:', bookingPayload);
       console.groupEnd();
 
-      const response = await fetch('https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/bookings', {
+      const response = await fetch('https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ const BookRoomPage = () => {
       console.log('Sending payment payload:', paymentPayload);
       console.groupEnd();
 
-      const paymentRes = await fetch('https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/payments/order', {
+      const paymentRes = await fetch('https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/payments/order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ const BookRoomPage = () => {
           // Step 3: Confirm booking
           try {
             console.group('✅ Confirming Booking');
-            const confirmRes = await fetch(`https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/bookings/${bookingId}/confirm`, {
+            const confirmRes = await fetch(`https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/bookings/${bookingId}/confirm`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',

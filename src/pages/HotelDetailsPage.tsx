@@ -145,7 +145,7 @@ const HotelDetailsPage = () => {
         console.log('📡 Fetching rooms for hotel ID:', hotelId);
 
         const response = await fetch(
-          `https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/rooms1/hotel/${hotelId}`,
+          `https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/rooms1/hotel/${hotelId}`,
           {
             headers: {
               'ngrok-skip-browser-warning': 'true',
