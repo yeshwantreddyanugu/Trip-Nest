@@ -1,108 +1,143 @@
-const fallbackHotels = [
-  {
-    id: "1",
-    name: "The Royal Palace Resort Famous",
-    location: "Goa",
-    rating: 4.8,
-    reviewCount: 1247,
-    pricePerNight: 8500,
-    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop"
-    ],
-    description: "Experience luxury at its finest with our beachfront resort offering world-class amenities and stunning ocean views.",
-    amenities: ["Wi-Fi", "Pool", "Spa", "Parking", "Breakfast", "AC", "Beach Access"],
-    tags: ["Top Rated", "Luxury"],
-    starCategory: 5,
-    coordinates: [15.2993, 74.1240]
-  },
-  {
-    id: "2",
-    name: "Mountain View Hotel",
-    location: "Manali",
-    rating: 4.5,
-    reviewCount: 892,
-    pricePerNight: 4500,
-    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop"
-    ],
-    description: "Nestled in the Himalayas, offering breathtaking mountain views and cozy accommodation.",
-    amenities: ["Wi-Fi", "Parking", "Breakfast", "AC", "Heater"],
-    tags: ["Mountain View", "Cozy"],
-    starCategory: 4,
-    coordinates: [32.2396, 77.1887]
-  },
-  {
-    id: "3",
-    name: "City Central Business Hotel",
-    location: "Mumbai",
-    rating: 4.2,
-    reviewCount: 654,
-    pricePerNight: 6800,
-    image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop"
-    ],
-    description: "Perfect for business travelers with modern amenities in the heart of the financial district.",
-    amenities: ["Wi-Fi", "Gym", "Business Center", "Parking", "AC"],
-    tags: ["Business", "Central"],
-    starCategory: 4,
-    coordinates: [19.0760, 72.8777]
-  },
-  {
-    id: "4",
-    name: "Heritage Lake Resort",
-    location: "Udaipur",
-    rating: 4.7,
-    reviewCount: 1089,
-    pricePerNight: 7200,
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop"
-    ],
-    description: "A palatial experience overlooking the beautiful Lake Pichola with traditional Rajasthani hospitality.",
-    amenities: ["Wi-Fi", "Pool", "Spa", "Parking", "Breakfast", "AC", "Lake View"],
-    tags: ["Heritage", "Lake View"],
-    starCategory: 5,
-    coordinates: [24.5854, 73.7125]
-  },
-  {
-    id: "5",
-    name: "Beach Paradise Resort",
-    location: "Goa",
-    rating: 4.3,
-    reviewCount: 758,
-    pricePerNight: 5500,
-    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&h=300&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop"
-    ],
-    description: "Beachfront property with direct access to pristine sands and crystal clear waters.",
-    amenities: ["Wi-Fi", "Pool", "Parking", "Breakfast", "AC", "Beach Access"],
-    tags: ["New", "Beach Front"],
-    starCategory: 4,
-    coordinates: [15.2993, 74.1240]
-  }
-];
-
-let hotels: any[] = fallbackHotels;
-
-try {
-  const response = await fetch("https://your-backend-api.com/api/v1/hotels", {
-    headers: {
-      'ngrok-skip-browser-warning': 'true',
-    },
-  });
-  if (response.ok) {
-    const data = await response.json();
-    if (Array.isArray(data)) hotels = data;
-  }
-} catch (error) {
-  console.warn("⚠️ API call failed. Using fallback hotel data.");
+// hotel.ts
+export interface HotelApiResponse {
+  content: any[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  [key: string]: any;
 }
 
-export default hotels;
+export interface FetchHotelsOptions {
+  city?: string;
+  query?: string;
+  page?: number;
+  size?: number;
+  sortBy?: string;
+  sortDir?: 'asc' | 'desc';
+  activeOnly?: boolean;
+}
+
+export interface FilterHotelsOptions {
+  minPrice?: number;
+  maxPrice?: number;
+  amenities?: string[];
+  rating?: number;
+  page?: number;
+  size?: number;
+  sortBy?: string;
+  sortDir?: 'asc' | 'desc';
+}
+
+const BASE_URL = 'https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/hotels';
+
+const fetchHotels = async ({
+  city,
+  query,
+  page = 0,
+  size = 10,
+  sortBy = 'rating',
+  sortDir = 'desc',
+  activeOnly = false
+}: FetchHotelsOptions): Promise<HotelApiResponse> => {
+  try {
+    const baseURL = query
+      ? `${BASE_URL}/search`
+      : `${BASE_URL}/city/${encodeURIComponent(city || 'Goa')}`;
+
+    const url = new URL(baseURL);
+
+    if (query) {
+      console.log(`🔎 Searching hotels with query: "${query}"`);
+      url.searchParams.append('query', query);
+    } else {
+      console.log(`📍 Fetching hotels for city: "${city}"`);
+      url.searchParams.append('activeOnly', activeOnly.toString());
+    }
+
+    url.searchParams.append('page', page.toString());
+    url.searchParams.append('size', size.toString());
+    url.searchParams.append('sortBy', sortBy);
+    url.searchParams.append('sortDir', sortDir); // ✅ corrected
+
+    console.log('🌐 Hotel Fetch API:', url.toString());
+
+    const response = await fetch(url.toString(), {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+    });
+
+    console.log('📡 fetchHotels response status:', response.status);
+    if (!response.ok) throw new Error(`API failed: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error('🚨 fetchHotels error:', error);
+    throw error;
+  }
+};
+
+const fetchFilteredHotels = async ({
+  minPrice,
+  maxPrice,
+  amenities,
+  rating,
+  page = 0,
+  size = 10,
+  sortBy = 'rating',
+  sortDir = 'desc'
+}: FilterHotelsOptions): Promise<HotelApiResponse> => {
+  try {
+    const url = new URL(`${BASE_URL}/search/advanced`);
+
+    if (minPrice !== undefined) url.searchParams.append('minPrice', minPrice.toString());
+    if (maxPrice !== undefined) url.searchParams.append('maxPrice', maxPrice.toString()); // ✅ ensure correct
+    if (rating !== undefined) url.searchParams.append('rating', rating.toString());
+    if (amenities?.length) {
+      url.searchParams.append('amenities', amenities.join(',').toLowerCase());
+    }
+
+    url.searchParams.append('page', page.toString());
+    url.searchParams.append('size', size.toString());
+    url.searchParams.append('sortBy', sortBy);
+    url.searchParams.append('sortDir', sortDir); // ✅ corrected key
+
+    console.log('🌐 Filtered API URL:', url.toString());
+
+    const response = await fetch(url.toString(), {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+    });
+
+    console.log('📡 fetchFilteredHotels status:', response.status);
+    if (!response.ok) throw new Error(`Filter API failed: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error('🚨 fetchFilteredHotels error:', error);
+    throw error;
+  }
+};
+
+const transformHotelData = (data: HotelApiResponse): HotelApiResponse => {
+  if (!Array.isArray(data.content)) throw new Error('❌ Invalid hotel data');
+
+  const transformedContent = data.content.map((hotel: any, index: number) => ({
+    id: hotel.id?.toString() || `hotel-${index + 1}`,
+    name: hotel.name || `Unnamed Hotel`,
+    location: hotel.city || "Unknown",
+    rating: hotel.rating || 0,
+    reviewCount: hotel.bookings || 0,
+    pricePerNight: hotel.revenue || 0,
+    image: hotel.thumbnail || "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&h=300&fit=crop",
+    images: [
+      hotel.thumbnail || "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop"
+    ],
+    description: hotel.description || "No description available",
+    amenities: hotel.amenities ? hotel.amenities.split(',').map((a: string) => a.trim()) : [],
+    tags: [],
+    starCategory: Math.floor(hotel.rating || 0),
+    coordinates: [0, 0],
+    rawData: hotel
+  }));
+
+  console.log('✅ Transformed hotels sample:', transformedContent.slice(0, 3));
+  return { ...data, content: transformedContent };
+};
+
+export { fetchHotels, fetchFilteredHotels, transformHotelData };

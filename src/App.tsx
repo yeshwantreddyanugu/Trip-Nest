@@ -16,6 +16,9 @@ import VehiclesPage from "./pages/VehiclesPage";
 import VehicleDetailsPage from "./pages/VehicleDetailsPage";
 import BookVehiclePage from "./pages/BookVehiclePage";
 import AuthPage from "./pages/AuthPage";
+import ScrollToTop from '@/components/ScrollToTop'; 
+import VehicleBookingConfirmationPage from './pages/VehicleBookingConfirmationPage';
+import MyBookingsPage from './pages/MyBookingsPage'; // update the path if needed
 
 const queryClient = new QueryClient();
 
@@ -24,24 +27,29 @@ const App = () => (
     <Toaster />
     <Sonner />
     <BrowserRouter basename="/Trip-Nest">
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/hotels" element={<HotelsPage />} />
-        <Route path="/hotels/:hotelId" element={<HotelDetailsPage />} />
-        <Route path="/book-room/:roomId" element={<BookRoomPage />} />
-        <Route path="/resorts" element={<ResortsPage />} />
-        <Route path="/resort/:resortId" element={<ResortDetailsPage />} />
-        <Route path="/book-resort/:resortId" element={<BookResortPage />} />
-        <Route path="/vehicles" element={<VehiclesPage />} />
-        <Route path="/vehicles/:vehicleId" element={<VehicleDetailsPage />} />
-        <Route path="/book-vehicle/:vehicleId" element={<BookVehiclePage />} />
-        <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <ScrollToTop />
+      <div id="top">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/hotels" element={<HotelsPage />} />
+          <Route path="/hotels/:hotelId" element={<HotelDetailsPage />} />
+          <Route path="/book-room/:roomId" element={<BookRoomPage />} />
+          <Route path="/resorts" element={<ResortsPage />} />
+          <Route path="/resort/:resortId" element={<ResortDetailsPage />} />
+          <Route path="/book-resort/:resortId" element={<BookResortPage />} />
+          <Route path="/vehicles" element={<VehiclesPage />} />
+          <Route path="/vehicles/:vehicleId" element={<VehicleDetailsPage />} />
+          <Route path="/book-vehicle/:vehicleId" element={<BookVehiclePage />} />
+          <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />
+          <Route path="/vehicle-booking-confirmation" element={<VehicleBookingConfirmationPage />} />
+          <Route path="/my-bookings" element={<MyBookingsPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   </QueryClientProvider>
 );
+
 
 export default App;

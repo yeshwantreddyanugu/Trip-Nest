@@ -8,7 +8,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer id="footer" className="bg-gray-900 text-white">
       {/* Newsletter Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

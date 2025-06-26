@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -6,119 +5,153 @@ import Footer from '@/components/Footer';
 import VehicleCard from '@/components/vehicles/VehicleCard';
 import VehicleFilters from '@/components/vehicles/VehicleFilters';
 import { Skeleton } from '@/components/ui/skeleton';
-import vehiclesData from '@/data/vehicles';
+import fetchVehiclesByCity from '@/data/vehicles';
 
 const VehiclesPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [vehicles, setVehicles] = useState([]);
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [filteredVehicles, setFilteredVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  const location = searchParams.get('location') || '';
+
+  const location = (searchParams.get('location') || '').toLowerCase();
   const fromDate = searchParams.get('fromDate') || '';
   const toDate = searchParams.get('toDate') || '';
-  
+
   const [filters, setFilters] = useState({
-    location: location,
+    location,
     type: [] as string[],
     transmission: [] as string[],
     fuel: [] as string[],
     ac: null as boolean | null,
-    priceRange: [100, 5000] as [number, number],
+    priceRange: [0, 10000] as [number, number],
     rating: 0
   });
+
   const [sortBy, setSortBy] = useState('rating');
 
+  // Fetch vehicles from backend by city
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      let filteredData = vehiclesData;
-      
-      // Filter by location if provided
-      if (location) {
-        filteredData = filteredData.filter(vehicle => 
-          vehicle.location.toLowerCase().includes(location.toLowerCase())
-        );
-      }
-      
-      setVehicles(filteredData);
-      setFilteredVehicles(filteredData);
-      setLoading(false);
-    }, 1000);
-  }, [location, fromDate, toDate]);
+    const fetchData = async () => {
+      setLoading(true);
+      console.log('🚗 Fetching vehicles for city:', location);
 
+      try {
+        const vehicleList = await fetchVehiclesByCity();
+        console.log('✅ Vehicles loaded:', vehicleList);
+        setVehicles(vehicleList);
+        setFilteredVehicles(vehicleList);
+      } catch (error) {
+        console.error('🔥 Error fetching vehicles:', error);
+        setVehicles([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (location) fetchData();
+  }, [location]);
+
+  // Apply filters and sorting whenever dependencies change
   useEffect(() => {
+    console.log('🔍 Applying filters and sorting...');
     applyFilters();
   }, [vehicles, filters, sortBy]);
 
   const applyFilters = () => {
+    console.log('🔧 Current filters:', filters);
+    console.log('🔧 Current sort by:', sortBy);
+
     let filtered = [...vehicles];
 
-    // Apply location filter
+    // Normalize helper
+    const normalize = (str: string) => (str || '').trim().toLowerCase();
+
+    // ✅ Location filter
     if (filters.location) {
-      filtered = filtered.filter(vehicle => 
-        vehicle.location.toLowerCase().includes(filters.location.toLowerCase())
+      const locationFilter = normalize(filters.location);
+      filtered = filtered.filter(v =>
+        normalize(v.location).includes(locationFilter)
       );
     }
 
-    // Apply type filter
+    // ✅ Type filter
     if (filters.type.length > 0) {
-      filtered = filtered.filter(vehicle => filters.type.includes(vehicle.type));
+      filtered = filtered.filter(v =>
+        filters.type.some(t =>
+          normalize(t) === normalize(v.type)
+        )
+      );
     }
 
-    // Apply transmission filter
+    // ✅ Transmission filter
     if (filters.transmission.length > 0) {
-      filtered = filtered.filter(vehicle => filters.transmission.includes(vehicle.transmission));
+      filtered = filtered.filter(v =>
+        filters.transmission.some(t =>
+          normalize(t) === normalize(v.transmission)
+        )
+      );
     }
 
-    // Apply fuel filter
+    // ✅ Fuel filter
     if (filters.fuel.length > 0) {
-      filtered = filtered.filter(vehicle => filters.fuel.includes(vehicle.fuel));
+      filtered = filtered.filter(v =>
+        filters.fuel.some(f =>
+          normalize(f) === normalize(v.fuel)
+        )
+      );
     }
 
-    // Apply AC filter
+    // ✅ AC filter
     if (filters.ac !== null) {
-      filtered = filtered.filter(vehicle => vehicle.ac === filters.ac);
+      filtered = filtered.filter(v => v.ac === filters.ac);
     }
 
-    // Apply price range filter (using daily price)
-    filtered = filtered.filter(vehicle =>
-      vehicle.pricePerDay >= filters.priceRange[0] &&
-      vehicle.pricePerDay <= filters.priceRange[1]
-    );
+    // ✅ Price range filter (based on pricePerDay)
+    filtered = filtered.filter(v => {
+      const price = v.pricePerDay || 0;
+      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+    });
 
-    // Apply rating filter
+    // ✅ Rating filter
     if (filters.rating > 0) {
-      filtered = filtered.filter(vehicle => vehicle.rating >= filters.rating);
+      filtered = filtered.filter(v => (v.rating || 0) >= filters.rating);
     }
 
-    // Apply sorting
+    // ✅ Sorting
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'rating':
-          return b.rating - a.rating;
+          return (b.rating || 0) - (a.rating || 0);
         case 'priceLow':
-          return a.pricePerDay - b.pricePerDay;
+          return (a.pricePerDay || 0) - (b.pricePerDay || 0);
         case 'priceHigh':
-          return b.pricePerDay - a.pricePerDay;
+          return (b.pricePerDay || 0) - (a.pricePerDay || 0);
         case 'newest':
-          return b.reviewCount - a.reviewCount;
+          return (b.reviewCount || 0) - (a.reviewCount || 0);
         default:
           return 0;
       }
     });
 
+    console.log('✅ Filtered vehicles:', filtered);
     setFilteredVehicles(filtered);
   };
 
+
   const handleViewDetails = (vehicleId: string) => {
-    const searchParams = new URLSearchParams();
-    if (fromDate) searchParams.set('fromDate', fromDate);
-    if (toDate) searchParams.set('toDate', toDate);
-    
-    navigate(`/vehicles/${vehicleId}?${searchParams.toString()}`);
+    const vehicle = vehicles.find(v => v.id.toString() === vehicleId);
+    const params = new URLSearchParams();
+
+    if (fromDate) params.set('fromDate', fromDate);
+    if (toDate) params.set('toDate', toDate);
+
+    navigate(`/vehicles/${vehicleId}?${params.toString()}`, {
+      state: { vehicle, city: location },
+    });
+
   };
+
 
   const VehicleCardSkeleton = () => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -137,7 +170,7 @@ const VehiclesPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -147,7 +180,7 @@ const VehiclesPage = () => {
             <p>{loading ? 'Loading...' : `${filteredVehicles.length} vehicles found`}</p>
             {fromDate && toDate && (
               <p>
-                <span className="font-medium">From:</span> {fromDate} | 
+                <span className="font-medium">From:</span> {fromDate} |{' '}
                 <span className="font-medium ml-2">To:</span> {toDate}
               </p>
             )}
@@ -156,8 +189,8 @@ const VehiclesPage = () => {
 
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/4">
-            <VehicleFilters 
-              filters={filters} 
+            <VehicleFilters
+              filters={filters}
               onFiltersChange={setFilters}
               sortBy={sortBy}
               onSortChange={setSortBy}
@@ -172,8 +205,8 @@ const VehiclesPage = () => {
                 ))
               ) : (
                 filteredVehicles.map((vehicle) => (
-                  <VehicleCard 
-                    key={vehicle.id} 
+                  <VehicleCard
+                    key={vehicle.id}
                     vehicle={vehicle}
                     onViewDetails={handleViewDetails}
                   />
@@ -183,15 +216,17 @@ const VehiclesPage = () => {
 
             {!loading && filteredVehicles.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No vehicles found matching your criteria.</p>
-                <button 
+                <p className="text-gray-500 text-lg">
+                  No vehicles found matching your criteria.
+                </p>
+                <button
                   onClick={() => setFilters({
-                    location: '',
-                    type: [] as string[],
-                    transmission: [] as string[],
-                    fuel: [] as string[],
-                    ac: null as boolean | null,
-                    priceRange: [100, 5000] as [number, number],
+                    ...filters,
+                    type: [],
+                    transmission: [],
+                    fuel: [],
+                    ac: null,
+                    priceRange: [100, 10000],
                     rating: 0
                   })}
                   className="mt-4 text-blue-600 hover:text-blue-800"

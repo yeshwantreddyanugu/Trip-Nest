@@ -14,6 +14,9 @@ interface Hotel {
   tags: string[];
   amenities: string[];
   starCategory: number;
+  minPrice:number;
+  maxPrice:number;
+
 }
 
 interface HotelCardProps {
@@ -75,7 +78,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
 
         <div className="flex justify-between items-center">
           <div>
-            <span className="text-2xl font-bold text-gray-900">₹{hotel.pricePerNight.toLocaleString()}</span>
+            <span className="text-2xl font-bold text-gray-900">₹{(hotel.minPrice ?? hotel.pricePerNight ?? 0).toLocaleString()}</span>
             <span className="text-gray-500 text-sm">/night</span>
           </div>
           <div className="text-right">

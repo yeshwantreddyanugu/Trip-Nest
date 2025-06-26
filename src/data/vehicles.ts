@@ -1,182 +1,82 @@
+import { useSearchParams } from 'react-router-dom';
+
 const fallbackVehicles = [
   {
-    id: "1",
-    name: "Royal Enfield Classic 350",
-    type: "2W",
-    category: "Bike",
-    transmission: "Manual",
-    fuel: "Petrol",
-    ac: false,
-    seating: 2,
-    mileage: "35 kmpl",
-    engine: "350cc",
-    vendor: "Royal Rides",
+    id: 0,
+    name: "Fallback Vehicle",
+    type: "Bike", // Changed to match your filter options
+    description: "Fallback vehicle data used due to fetch failure.",
+    mileage: 0,
+    status: "Available",
+    isAvailable: true,
+    image: "",
+    pricePerHour: 100,
+    pricePerDay: 500,
+    pricePerWeek: 3000,
+    location: "goa",
+    transmission: "manual",
+    fuel: "petrol",
+    ac: true,
     rating: 4.5,
-    reviewCount: 124,
-    pricePerHour: 150,
-    pricePerDay: 800,
-    pricePerWeek: 4500,
-    location: "Goa",
-    isAvailable: true,
-    images: [
-      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&q=80"
-    ],
-    description: "Perfect for cruising through Goa's scenic routes. Classic Royal Enfield experience with modern reliability.",
-    tags: ["Top Rated", "Most Booked"],
-    availability: "Available Now"
+    reviewCount: 50,
   },
-  {
-    id: "2",
-    name: "Maruti Swift Dzire",
-    type: "4W",
-    category: "Sedan",
-    transmission: "Manual",
-    fuel: "Petrol",
-    ac: true,
-    seating: 5,
-    mileage: "22 kmpl",
-    engine: "1200cc",
-    vendor: "Swift Rentals",
-    rating: 4.3,
-    reviewCount: 89,
-    pricePerHour: 250,
-    pricePerDay: 1500,
-    pricePerWeek: 9000,
-    location: "Mumbai",
-    isAvailable: true,
-    images: [
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80"
-    ],
-    description: "Comfortable sedan perfect for city drives and highway trips. Spacious interior with modern amenities.",
-    tags: ["Available Now", "AC"],
-    availability: "Available Now"
-  },
-  {
-    id: "3",
-    name: "Honda Activa 6G",
-    type: "2W",
-    category: "Scooter",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    ac: false,
-    seating: 2,
-    mileage: "60 kmpl",
-    engine: "110cc",
-    vendor: "Quick Rides",
-    rating: 4.2,
-    reviewCount: 156,
-    pricePerHour: 80,
-    pricePerDay: 400,
-    pricePerWeek: 2500,
-    location: "Bangalore",
-    isAvailable: true,
-    images: [
-      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1588472606400-e2c8f10a6bdb?auto=format&fit=crop&w=800&q=80"
-    ],
-    description: "Easy to ride scooter perfect for city commuting. Excellent fuel efficiency and comfortable seating.",
-    tags: ["Fuel Efficient", "Easy Ride"],
-    availability: "Available Now"
-  },
-  {
-    id: "4",
-    name: "Hyundai Creta",
-    type: "4W",
-    category: "SUV",
-    transmission: "Automatic",
-    fuel: "Diesel",
-    ac: true,
-    seating: 5,
-    mileage: "18 kmpl",
-    engine: "1500cc",
-    vendor: "Premium Wheels",
-    rating: 4.6,
-    reviewCount: 73,
-    pricePerHour: 400,
-    pricePerDay: 2500,
-    pricePerWeek: 15000,
-    location: "Delhi",
-    isAvailable: true,
-    images: [
-      "https://images.unsplash.com/photo-1549399936-e7c4a90a3738?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1581540222194-0def2dda95b8?auto=format&fit=crop&w=800&q=80"
-    ],
-    description: "Premium SUV with advanced features and spacious interior. Perfect for family trips and long drives.",
-    tags: ["Premium", "Family Friendly"],
-    availability: "Available Now"
-  },
-  {
-    id: "5",
-    name: "KTM Duke 390",
-    type: "2W",
-    category: "Bike",
-    transmission: "Manual",
-    fuel: "Petrol",
-    ac: false,
-    seating: 2,
-    mileage: "25 kmpl",
-    engine: "390cc",
-    vendor: "Speed Demons",
-    rating: 4.7,
-    reviewCount: 92,
-    pricePerHour: 200,
-    pricePerDay: 1200,
-    pricePerWeek: 7000,
-    location: "Manali",
-    isAvailable: true,
-    images: [
-      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=800&q=80"
-    ],
-    description: "High-performance bike perfect for mountain adventures. Powerful engine with excellent handling.",
-    tags: ["High Performance", "Adventure"],
-    availability: "Limited Units"
-  },
-  {
-    id: "6",
-    name: "Mahindra Thar",
-    type: "4W",
-    category: "SUV",
-    transmission: "Manual",
-    fuel: "Diesel",
-    ac: true,
-    seating: 4,
-    mileage: "15 kmpl",
-    engine: "2200cc",
-    vendor: "Off Road Kings",
-    rating: 4.8,
-    reviewCount: 45,
-    pricePerHour: 500,
-    pricePerDay: 3500,
-    pricePerWeek: 20000,
-    location: "Ooty",
-    isAvailable: true,
-    images: [
-      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80"
-    ],
-    description: "Ultimate off-road vehicle for adventure enthusiasts. Perfect for hill station exploration.",
-    tags: ["Off Road", "Adventure", "Top Rated"],
-    availability: "Available Now"
-  }
 ];
 
-let vehicles: any[] = fallbackVehicles;
+export const getCityFromURL = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('location') || 'goa';
+};
 
-try {
-  const response = await fetch("https://your-backend-url.com/api/v1/vehicles", {
-    headers: {
-      'ngrok-skip-browser-warning': 'true',
-    },
-  });
-  if (response.ok) {
-    const data = await response.json();
-    if (Array.isArray(data)) vehicles = data;
+const fetchVehiclesByCity = async (city: string = getCityFromURL()): Promise<any[]> => {
+  const endpoint = `https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/vehicles/city/${encodeURIComponent(city)}`;
+
+  console.log(`📍 Fetching vehicles for city: ${city}`);
+
+  try {
+    const response = await fetch(endpoint, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
+    });
+
+    if (!response.ok) {
+      console.warn("❌ Vehicle API responded with:", response.status);
+      return fallbackVehicles;
+    }
+
+    const json = await response.json();
+    console.log("📦 Raw API response:", json);
+
+    // Handle different response structures
+    const data = Array.isArray(json) ? json : (json.content || json.data || []);
+
+    const vehicles = data.map((item: any) => ({
+      id: item.id || 0,
+      name: item.vehicleName || item.name || 'Unnamed Vehicle',
+      type: item.vehicleType || item.type || 'Bike', // Default to Bike if not specified
+      description: item.description || 'No description available',
+      mileage: item.mileage || 0,
+      status: item.status || 'Available',
+      isAvailable: item.available !== false, // Default to true if not specified
+      image: item.url || item.image || '',
+      pricePerHour: item.hourlyPrice || item.pricePerHour || 100,
+      pricePerDay: item.dailyPrice || item.pricePerDay || 500,
+      pricePerWeek: item.weeklyPrice || item.pricePerWeek || 3000,
+      location: item.city || item.location || item.partnerName || city,
+      transmission: (item.transmission || 'manual').toLowerCase(),
+      fuel: (item.fuel || 'petrol').toLowerCase(),
+      ac: item.airConditioning?.toLowerCase() === 'yes' || item.ac === true,
+      rating: item.rating || 4 + Math.random(), // Use provided rating or mock one
+      reviewCount: item.reviewCount || Math.floor(Math.random() * 200),
+    }));
+
+    console.log("✅ Processed vehicles:", vehicles);
+    return vehicles;
+
+  } catch (error) {
+    console.error("🚨 Failed to fetch vehicles by city:", error);
+    return fallbackVehicles;
   }
-} catch (error) {
-  console.warn("⚠️ Vehicle API failed, using fallback data");
-}
+};
 
-export default vehicles;
+export default fetchVehiclesByCity;

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Calendar, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -12,35 +11,39 @@ const Hero = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
 
+  const uid = localStorage.getItem('firebaseUID');
+  const isGuest = !uid;
+
   const tabs = [
     { id: 'hotels', label: 'Hotels', icon: '🏨' },
     { id: 'resorts', label: 'Resorts', icon: '🏝️' },
     { id: 'vehicles', label: 'Vehicles', icon: '🚗' }
   ];
 
-  const popularCities = ['Goa', 'Manali', 'Ooty', 'Hyderabad', 'Pondicherry', 'Mumbai', 'Delhi', 'Bangalore'];
+  const popularCities = ['Goa', 'Manali', 'Udaipur', 'Hyderabad', 'Pondicherry', 'Mumbai', 'Delhi', 'Bangalore', 'uppal'];
 
   const handleSearch = () => {
+    if (isGuest) {
+      navigate('/auth');
+      return;
+    }
+
+    const searchParams = new URLSearchParams();
+
     if (activeTab === 'hotels') {
-      const searchParams = new URLSearchParams();
       if (selectedLocation) searchParams.set('city', selectedLocation);
       if (checkIn) searchParams.set('fromDate', checkIn);
       if (checkOut) searchParams.set('toDate', checkOut);
-      
       navigate(`/hotels?${searchParams.toString()}`);
     } else if (activeTab === 'resorts') {
-      const searchParams = new URLSearchParams();
       if (selectedLocation) searchParams.set('location', selectedLocation);
       if (checkIn) searchParams.set('checkIn', checkIn);
       if (checkOut) searchParams.set('checkOut', checkOut);
-      
       navigate(`/resorts?${searchParams.toString()}`);
     } else if (activeTab === 'vehicles') {
-      const searchParams = new URLSearchParams();
       if (selectedLocation) searchParams.set('location', selectedLocation);
       if (checkIn) searchParams.set('fromDate', checkIn);
       if (checkOut) searchParams.set('toDate', checkOut);
-      
       navigate(`/vehicles?${searchParams.toString()}`);
     }
   };
@@ -49,12 +52,12 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <img 
+        <img
           src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80"
           alt="Beautiful mountain landscape"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
       </div>
 
       {/* Floating Elements */}
@@ -91,7 +94,7 @@ const Hero = () => {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => !isGuest && setActiveTab(tab.id)}
                 className={`flex items-center px-6 py-3 mx-2 mb-2 rounded-full font-semibold transition-all duration-300 ${
                   activeTab === tab.id
                     ? 'bg-white text-blue-600 shadow-lg scale-105'
@@ -112,9 +115,9 @@ const Hero = () => {
                 <MapPin className="h-4 w-4 mr-2" />
                 {activeTab === 'vehicles' ? 'Pick-up Location' : 'Where to?'}
               </label>
-              <select 
+              <select
                 value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
+                onChange={(e) => !isGuest && setSelectedLocation(e.target.value)}
                 className="w-full p-3 rounded-lg bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-blue-500 font-medium"
               >
                 {popularCities.map(city => (
@@ -123,7 +126,7 @@ const Hero = () => {
               </select>
             </div>
 
-            {/* Check In / From Date */}
+            {/* From Date */}
             <div className="space-y-2">
               <label className="text-white font-medium flex items-center">
                 <Calendar className="h-4 w-4 mr-2" />
@@ -132,12 +135,12 @@ const Hero = () => {
               <input
                 type="date"
                 value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
+                onChange={(e) => !isGuest && setCheckIn(e.target.value)}
                 className="w-full p-3 rounded-lg bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            {/* Check Out / To Date */}
+            {/* To Date */}
             <div className="space-y-2">
               <label className="text-white font-medium flex items-center">
                 <Calendar className="h-4 w-4 mr-2" />
@@ -146,14 +149,14 @@ const Hero = () => {
               <input
                 type="date"
                 value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
+                onChange={(e) => !isGuest && setCheckOut(e.target.value)}
                 className="w-full p-3 rounded-lg bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            {/* Search Button */}
-            <Button 
-              size="lg" 
+            {/* ✅ Search Button - Only redirects if guest */}
+            <Button
+              size="lg"
               onClick={handleSearch}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             >

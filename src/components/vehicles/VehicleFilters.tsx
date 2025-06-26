@@ -1,10 +1,20 @@
-
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent
+} from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 
 interface VehicleFilters {
@@ -24,17 +34,31 @@ interface VehicleFiltersProps {
   onSortChange: (sortBy: string) => void;
 }
 
-const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChange }: VehicleFiltersProps) => {
+const VehicleFiltersComponent = ({
+  filters,
+  onFiltersChange,
+  sortBy,
+  onSortChange
+}: VehicleFiltersProps) => {
   const updateFilter = (key: keyof VehicleFilters, value: any) => {
+    console.log(`🔄 Updating filter ${key} to:`, value);
     onFiltersChange({ ...filters, [key]: value });
   };
 
-  const handleCheckboxChange = (key: 'type' | 'transmission' | 'fuel', value: string, checked: boolean) => {
+  const handleCheckboxChange = (
+    key: 'type' | 'transmission' | 'fuel',
+    value: string,
+    checked: boolean
+  ) => {
+    console.log(`☑️ ${key} checkbox changed:`, value, checked);
     const currentArray = filters[key] as string[];
     if (checked) {
       updateFilter(key, [...currentArray, value]);
     } else {
-      updateFilter(key, currentArray.filter(item => item !== value));
+      updateFilter(
+        key,
+        currentArray.filter((item) => item !== value)
+      );
     }
   };
 
@@ -66,16 +90,16 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
         <div>
           <Label className="text-sm font-medium mb-3 block">Vehicle Type</Label>
           <div className="space-y-2">
-            {['2W', '4W'].map((type) => (
+            {['SUV', 'Car', 'Bike', 'Scooter', 'Van'].map((type) => (
               <div key={type} className="flex items-center space-x-2">
                 <Checkbox
                   id={`type-${type}`}
                   checked={filters.type.includes(type)}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={(checked) =>
                     handleCheckboxChange('type', type, checked as boolean)
                   }
                 />
-                <Label htmlFor={`type-${type}`}>{type === '2W' ? 'Two Wheeler' : 'Four Wheeler'}</Label>
+                <Label htmlFor={`type-${type}`}>{type}</Label>
               </div>
             ))}
           </div>
@@ -92,7 +116,7 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
                 <Checkbox
                   id={`transmission-${transmission}`}
                   checked={filters.transmission.includes(transmission)}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={(checked) =>
                     handleCheckboxChange('transmission', transmission, checked as boolean)
                   }
                 />
@@ -113,7 +137,7 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
                 <Checkbox
                   id={`fuel-${fuel}`}
                   checked={filters.fuel.includes(fuel)}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={(checked) =>
                     handleCheckboxChange('fuel', fuel, checked as boolean)
                   }
                 />
@@ -125,7 +149,7 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
 
         <Separator />
 
-        {/* AC Filter */}
+        {/* AC Availability */}
         <div>
           <Label className="text-sm font-medium mb-3 block">Air Conditioning</Label>
           <div className="space-y-2">
@@ -133,7 +157,7 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
               <Checkbox
                 id="ac-available"
                 checked={filters.ac === true}
-                onCheckedChange={(checked) => 
+                onCheckedChange={(checked) =>
                   updateFilter('ac', checked ? true : null)
                 }
               />
@@ -143,7 +167,7 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
               <Checkbox
                 id="non-ac"
                 checked={filters.ac === false}
-                onCheckedChange={(checked) => 
+                onCheckedChange={(checked) =>
                   updateFilter('ac', checked ? false : null)
                 }
               />
@@ -154,28 +178,60 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
 
         <Separator />
 
-        {/* Price Range */}
+        {/* Price Range Slider */}
+
         <div>
           <Label className="text-sm font-medium mb-3 block">
             Price Range (Per Day): ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
           </Label>
-          <Slider
-            value={filters.priceRange}
-            onValueChange={(value) => updateFilter('priceRange', value as [number, number])}
-            max={5000}
-            min={100}
-            step={100}
-            className="w-full"
-          />
+
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            {/* Min Slider */}
+            <div style={{ flex: 1 }}>
+              <Label style={{ display: 'block', marginBottom: '4px' }}>Min</Label>
+              <Slider
+                value={[filters.priceRange[0]]}
+                onValueChange={(value: number[]) => {
+                  const newMin = value[0];
+                  const max = filters.priceRange[1];
+                  if (newMin <= max) {
+                    updateFilter('priceRange', [newMin, max]);
+                  }
+                }}
+                min={0}
+                max={10000}
+                step={100}
+              />
+            </div>
+
+            {/* Max Slider */}
+            <div style={{ flex: 1 }}>
+              <Label style={{ display: 'block', marginBottom: '4px' }}>Max</Label>
+              <Slider
+                value={[filters.priceRange[1]]}
+                onValueChange={(value: number[]) => {
+                  const newMax = value[0];
+                  const min = filters.priceRange[0];
+                  if (newMax >= min) {
+                    updateFilter('priceRange', [min, newMax]);
+                  }
+                }}
+                min={100}
+                max={100000}
+                step={100}
+              />
+            </div>
+          </div>
         </div>
+
 
         <Separator />
 
-        {/* Rating Filter */}
+        {/* Rating */}
         <div>
           <Label className="text-sm font-medium mb-3 block">Minimum Rating</Label>
-          <Select 
-            value={filters.rating.toString()} 
+          <Select
+            value={filters.rating.toString()}
             onValueChange={(value) => updateFilter('rating', parseFloat(value))}
           >
             <SelectTrigger>
@@ -186,6 +242,7 @@ const VehicleFiltersComponent = ({ filters, onFiltersChange, sortBy, onSortChang
               <SelectItem value="3">3+ Stars</SelectItem>
               <SelectItem value="4">4+ Stars</SelectItem>
               <SelectItem value="4.5">4.5+ Stars</SelectItem>
+              <SelectItem value="4.9">5 Stars</SelectItem>
             </SelectContent>
           </Select>
         </div>

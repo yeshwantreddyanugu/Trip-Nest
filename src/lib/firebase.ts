@@ -3,12 +3,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-auth-domain",
-  projectId: "your-project-id",
-  storageBucket: "your-storage-bucket",
-  messagingSenderId: "your-messaging-sender-id",
-  appId: "your-app-id"
+  apiKey: "AIzaSyCncBPAu0aA5lMvo_yI12IvmAJmYexYVVY",
+  authDomain: "ammaconstruction-db736.firebaseapp.com",
+  projectId: "ammaconstruction-db736",
+  storageBucket: "ammaconstruction-db736.firebasestorage.app",
+  messagingSenderId: "950078485562",
+  appId: "1:950078485562:web:fccf2d88873ec160ffb103"
 };
 
 const app = initializeApp(firebaseConfig);

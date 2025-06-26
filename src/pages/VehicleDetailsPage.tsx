@@ -1,54 +1,107 @@
+import React, { useEffect, useState } from 'react';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams
+} from 'react-router-dom';
+import {
+  Star,
+  MapPin,
+  Users,
+  Zap,
+  Settings,
+  Calendar,
+  ArrowLeft
+} from 'lucide-react';
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { Star, MapPin, Users, Zap, Settings, Calendar, ArrowLeft } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import vehiclesData from '@/data/vehicles';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel';
+import fetchVehiclesByCity from '@/data/vehicles';
 
 const VehicleDetailsPage = () => {
   const { vehicleId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [vehicle, setVehicle] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const selectedCity = location.state?.city;
+
 
   const fromDate = searchParams.get('fromDate') || '';
   const toDate = searchParams.get('toDate') || '';
 
+  const passedVehicle = location.state?.vehicle;
+  console.log("passed Vehicle");
+  console.log(passedVehicle);
+  const [vehicle, setVehicle] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      const foundVehicle = vehiclesData.find(v => v.id === vehicleId);
-      setVehicle(foundVehicle || null);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // ⬆️ scroll to top
+
+    console.log('📦 Vehicle ID from URL:', vehicleId);
+    console.log('📅 From:', fromDate, '| To:', toDate);
+    console.log('📤 Passed vehicle from state:', passedVehicle);
+
+    if (passedVehicle) {
+      console.log('✅ Using vehicle from route state.');
+      enrichVehicle(passedVehicle);
+      setVehicle(passedVehicle);
       setLoading(false);
-    }, 500);
+    } else {
+      console.warn('⚠️ No vehicle in route state. Fetching from vehiclesData...');
+      fetchVehiclesByCity(selectedCity || 'goa').then((data: any[]) => {
+        const found = data.find((v: any) => v.id.toString() === vehicleId);
+
+
+        if (found) {
+          console.log('✅ Fallback vehicle found:', found);
+          enrichVehicle(found);
+          setVehicle(found);
+        } else {
+          console.error('❌ No vehicle found for ID:', vehicleId);
+          setVehicle(null);
+        }
+
+        setLoading(false);
+      });
+    }
+
   }, [vehicleId]);
 
+  const enrichVehicle = (v: any) => {
+    const tags: string[] = [];
+    if (v.name?.toLowerCase().includes('thar')) tags.push('Off Road');
+    if (v.type === 'SUV') tags.push('Adventure');
+    if (v.rating >= 4.5) tags.push('Top Rated');
+    v.tags = tags;
+  };
+
   const handleBookNow = () => {
-    const searchParams = new URLSearchParams();
-    if (fromDate) searchParams.set('fromDate', fromDate);
-    if (toDate) searchParams.set('toDate', toDate);
-    
-    navigate(`/book-vehicle/${vehicleId}?${searchParams.toString()}`);
+    const query = new URLSearchParams();
+    if (fromDate) query.set('fromDate', fromDate);
+    if (toDate) query.set('toDate', toDate);
+
+    navigate(`/book-vehicle/${vehicleId}?${query.toString()}`, {
+      state: { vehicle },
+    });
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse space-y-6">
-            <div className="h-64 bg-gray-300 rounded-lg"></div>
-            <div className="h-8 bg-gray-300 rounded w-1/2"></div>
-            <div className="h-4 bg-gray-300 rounded w-1/4"></div>
-            <div className="h-32 bg-gray-300 rounded"></div>
-          </div>
-        </div>
+        <div className="container mx-auto px-4 py-8">Loading vehicle details...</div>
         <Footer />
       </div>
     );
@@ -70,27 +123,21 @@ const VehicleDetailsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate(-1)}
-          className="mb-6"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
+          <ArrowLeft className="h-4 w-4 mr-2" /> Back
         </Button>
 
         {/* Image Carousel */}
         <div className="mb-8">
           <Carousel className="w-full">
             <CarouselContent>
-              {vehicle.images.map((image, index) => (
+              {(vehicle.images?.length > 0 ? vehicle.images : [vehicle.image || '/placeholder.jpg']).map((img, index) => (
                 <CarouselItem key={index}>
                   <div className="relative h-96 rounded-lg overflow-hidden">
-                    <img 
-                      src={image} 
+                    <img
+                      src={img}
                       alt={`${vehicle.name} - ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -104,24 +151,24 @@ const VehicleDetailsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
+          {/* Left Section */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Header */}
             <div>
               <div className="flex flex-wrap gap-2 mb-4">
-                {vehicle.tags.map((tag, index) => (
-                  <Badge key={index} className="bg-blue-500 text-white">
+                {vehicle.tags?.map((tag: string, index: number) => (
+                  <Badge
+                    key={index}
+                    className={`text-white ${tag === 'Off Road' ? 'bg-red-500' : tag === 'Adventure' ? 'bg-green-500' : 'bg-blue-500'}`}
+                  >
                     {tag}
                   </Badge>
                 ))}
               </div>
-              
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{vehicle.name}</h1>
-              
               <div className="flex items-center gap-4 mb-4">
                 <div className="flex items-center gap-1">
                   <Star className="h-5 w-5 text-yellow-500" />
-                  <span className="font-semibold">{vehicle.rating}</span>
+                  <span className="font-semibold">{vehicle.rating.toFixed(1)}</span>
                   <span className="text-gray-500">({vehicle.reviewCount} reviews)</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-600">
@@ -129,13 +176,11 @@ const VehicleDetailsPage = () => {
                   <span>{vehicle.location}</span>
                 </div>
               </div>
-
               <div className="text-gray-600">
                 <span className="font-medium">Vendor:</span> {vehicle.vendor}
               </div>
             </div>
 
-            {/* Description */}
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-3">Description</h3>
@@ -143,7 +188,6 @@ const VehicleDetailsPage = () => {
               </CardContent>
             </Card>
 
-            {/* Specifications */}
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-4">Specifications</h3>
@@ -179,22 +223,27 @@ const VehicleDetailsPage = () => {
                   </div>
                   <div>
                     <div className="font-medium">AC</div>
-                    <div className="text-sm text-gray-600">{vehicle.ac ? 'Yes' : 'No'}</div>
+                    <div className="text-sm text-gray-600">
+                      {vehicle.ac ? 'Available' : 'Not Available'}
+                    </div>
                   </div>
+
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Booking Sidebar */}
+          {/* Right Pricing Section */}
           <div className="lg:col-span-1">
             <Card className="sticky top-4">
               <CardContent className="p-6">
                 <div className="mb-6">
-                  <Badge className="bg-green-500 text-white mb-3">
-                    {vehicle.availability}
+                  <Badge className={`mb-3 text-white ${vehicle.isAvailable ? 'bg-green-500' : 'bg-red-500'}`}>
+                    {vehicle.isAvailable ? 'Available' : 'Not Available'}
                   </Badge>
+
                   <h3 className="text-xl font-semibold mb-2">Pricing</h3>
+
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Per Hour:</span>
@@ -211,6 +260,7 @@ const VehicleDetailsPage = () => {
                   </div>
                 </div>
 
+
                 {fromDate && toDate && (
                   <div className="mb-6 p-3 bg-blue-50 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
@@ -224,7 +274,7 @@ const VehicleDetailsPage = () => {
                   </div>
                 )}
 
-                <Button 
+                <Button
                   onClick={handleBookNow}
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                   size="lg"

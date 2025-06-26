@@ -6,7 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 
 interface RoomFilters {
-  priceRange: number[];
+   priceRange: [number, number];
   hasAC: boolean;
   maxOccupancy: string;
   availableOnly: boolean;
