@@ -242,7 +242,7 @@ const BookVehiclePage = () => {
       }
       console.groupEnd();
 
-      const response = await fetch('https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/bookings', {
+      const response = await fetch('https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/bookings', {
         method: 'POST',
         body: formData,
         headers: {
