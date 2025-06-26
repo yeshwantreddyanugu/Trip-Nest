@@ -306,7 +306,7 @@ const BookVehiclePage = () => {
       console.log('Payment Payload:', paymentPayload);
       console.groupEnd();
 
-      const orderRes = await fetch('https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/payments/order', {
+      const orderRes = await fetch('https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/payments/order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -369,7 +369,7 @@ const BookVehiclePage = () => {
 
           // Step 5: Call backend to confirm payment
           try {
-            const confirmRes = await fetch(`https://9a09-2401-4900-1cb4-2028-fcd7-5179-cc48-37c6.ngrok-free.app/api/v1/bookings/${bookingRes.bookingId}/payment`, {
+            const confirmRes = await fetch(`https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/bookings/${bookingRes.bookingId}/payment`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
