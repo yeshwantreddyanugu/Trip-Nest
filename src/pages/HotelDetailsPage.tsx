@@ -33,6 +33,8 @@ interface Room {
   mainImage: string;
 }
 
+const Base_url = `https://a0bd-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app`;
+
 const HotelDetailsPage = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
   const [searchParams] = useSearchParams();
@@ -145,7 +147,7 @@ const HotelDetailsPage = () => {
         console.log('📡 Fetching rooms for hotel ID:', hotelId);
 
         const response = await fetch(
-          `https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/rooms1/hotel/${hotelId}`,
+          `${Base_url}/api/v1/rooms1/hotel/${hotelId}`,
           {
             headers: {
               'ngrok-skip-browser-warning': 'true',

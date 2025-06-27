@@ -28,7 +28,7 @@ export const getCityFromURL = () => {
 };
 
 const fetchVehiclesByCity = async (city: string = getCityFromURL()): Promise<any[]> => {
-  const endpoint = `https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/vehicles/city/${encodeURIComponent(city)}`;
+  const endpoint = `https://a0bd-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/vehicles/city/${encodeURIComponent(city)}`;
 
   console.log(`📍 Fetching vehicles for city: ${city}`);
 

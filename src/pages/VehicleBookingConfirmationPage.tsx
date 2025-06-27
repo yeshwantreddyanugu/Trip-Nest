@@ -104,7 +104,7 @@ const VehicleBookingConfirmationPage = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="container mx-auto px-4 py-12"
+        className="container mx-auto px-4 py-12 pt-24"
       >
         <div
           ref={receiptRef}
@@ -188,7 +188,7 @@ const VehicleBookingConfirmationPage = () => {
             {/* Action Buttons */}
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
               <Button
-                onClick={() => navigate('/vehicles')}
+                onClick={() => navigate('/')}
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-8 py-3 text-lg rounded-xl flex items-center gap-2 shadow-lg"
               >
                 Browse More Vehicles <ArrowRight className="w-5 h-5" />

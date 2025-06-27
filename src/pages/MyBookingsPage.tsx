@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { CalendarDays, Hotel, Car, User, Phone, MapPin, CreditCard, ClipboardList, Star, ArrowLeft } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
+const Base_url = `https://a0bd-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app`;
+
 const fallbackHotelData = [
     {
         bookingReference: 'BK1234567890',
@@ -129,7 +131,7 @@ const MyBookingsPage = () => {
         setLoading(true);
         try {
             console.log('[🏨] Fetching hotel bookings for UID:', uid);
-            const response = await fetch(`https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/bookings/user/uid/${uid}`, {
+            const response = await fetch(`${Base_url}/api/bookings/user/uid/${uid}`, {
 headers: {
     'ngrok-skip-browser-warning': 'true'
 }
@@ -156,7 +158,7 @@ headers: {
         setLoading(true);
         try {
             console.log('[🚗] Fetching vehicle bookings for UID:', uid);
-            const response = await fetch(`https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/bookings/user/${uid}`, {
+            const response = await fetch(`${Base_url}/api/v1/bookings/user/${uid}`, {
 headers: {
     'ngrok-skip-browser-warning': 'true'
 }

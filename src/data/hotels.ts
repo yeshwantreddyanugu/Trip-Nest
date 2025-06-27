@@ -28,7 +28,7 @@ export interface FilterHotelsOptions {
   sortDir?: 'asc' | 'desc';
 }
 
-const BASE_URL = 'https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/hotels';
+const BASE_URL = 'https://a0bd-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/hotels';
 
 const fetchHotels = async ({
   city,

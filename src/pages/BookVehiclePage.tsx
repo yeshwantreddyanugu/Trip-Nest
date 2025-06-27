@@ -10,6 +10,9 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import vehiclesData from '@/data/vehicles';
 
+
+const Base_url = `https://a0bd-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app`;
+
 const BookVehiclePage = () => {
   const { vehicleId } = useParams();
   const [searchParams] = useSearchParams();
@@ -242,7 +245,7 @@ const BookVehiclePage = () => {
       }
       console.groupEnd();
 
-      const response = await fetch('https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/bookings', {
+      const response = await fetch(`${Base_url}/api/v1/bookings`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -306,7 +309,7 @@ const BookVehiclePage = () => {
       console.log('Payment Payload:', paymentPayload);
       console.groupEnd();
 
-      const orderRes = await fetch('https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/payments/order', {
+      const orderRes = await fetch(`${Base_url}/api/v1/payments/order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -369,7 +372,7 @@ const BookVehiclePage = () => {
 
           // Step 5: Call backend to confirm payment
           try {
-            const confirmRes = await fetch(`https://9511-2401-4900-1cb4-2028-78a2-eabb-c0cc-977d.ngrok-free.app/api/v1/bookings/${bookingRes.bookingId}/payment`, {
+            const confirmRes = await fetch(`${Base_url}/api/v1/bookings/${bookingRes.bookingId}/payment`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
